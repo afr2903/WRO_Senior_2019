@@ -5,12 +5,14 @@ int dev;
 int gyro;
 int  Kp = 100;
 int offset = 28; //light value
-int offset_r= 39;
+int offset_r= 34;
 int offset_l= 28;
 int Tp = 80; //speed
 int turn =0;
 int powerRight=0;
 int powerLeft=0;
+int powerRight2=0;
+int powerLeft2=0;
 int error=0;
 int light_value=0;
 
@@ -48,14 +50,21 @@ void lf_r(){
 	error= light_value - offset_r;
 	turn= Kp*error;
 	turn=turn/100;
-	powerRight= Tp-turn;
-	powerLeft= Tp+turn;
+	powerRight= (Tp-turn)*0.4;
+	powerLeft= (Tp+turn)*0.4;
 	displayBigTextLine(9, "luz: %d",light_value);
-	setMotorSpeed(motorB, powerRight);
-	setMotorSpeed(motorC, powerLeft);
+
+	gyro= getGyroDegrees(S3);
+	string gyr= getGyroDegrees(S3);
+	displayBigTextLine(5, gyr);
+	powerRight2= (70+gyro)*0.6;
+	powerLeft2= (70-gyro)*0.6;
+
+	setMotorSpeed(motorB, powerRight+powerRight2);
+	setMotorSpeed(motorC, powerLeft+powerLeft2);
 }
 void spin(int dg){
-	while(getGyroDegrees(S3)<dg-2||getGyroDegrees(S3)>dg+2){
+	while(getGyroDegrees(S3)<dg-1||getGyroDegrees(S3)>dg+1){
 		gyro= getGyroDegrees(S3);
 		string gyr= getGyroDegrees(S3);
 		displayBigTextLine(5, gyr);
@@ -65,7 +74,7 @@ void spin(int dg){
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	resetGyro(S3);
-	delay(100);
+	delay(300);
 }
 
 void av_line(){
@@ -76,16 +85,17 @@ void av_line(){
 	setMotorSpeed(motorC, 0);
 	delay(200);
 }
-void rev_line(){
-	clearTimer(T1);
-	while(time1[T1]<200) lf();
+void pick(){
+	av_line();
+	setMotorSpeed(motorB, -60);
+	delay(400);
+	while(getColorReflected(S1)>15) setMotorSpeed(motorB, -50);
+	setMotorSpeed(motorB, 0);
+	delay(300);
+
 	while(getColorReflected(S2)>15) lf();
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
-	delay(200);
-}
-void pick(){
-	av(100, 60);
 	delay(300);
 	spin(90);
 	setMotorSpeed(motorD, -100);
@@ -94,42 +104,73 @@ void pick(){
 	delay(500);
 }
 void put(){
-	av(0, 50);
 	int dif= devpos[cdev]-curr_line;
 	if(dif>0){
-		spin(-90);
+		av(-50,60);
+		setMotorSpeed(motorB, 60);
+		delay(500);
+		while(getColorReflected(S1)>15) setMotorSpeed(motorB, 50);
+		setMotorSpeed(motorB, 0);
+		delay(300);
+
 		av_line();
-		av(120,50);
-		spin(-90);
+		setMotorSpeed(motorC, -50);
+		delay(500);
+		while(getColorReflected(S1)>15) setMotorSpeed(motorC, -50);
+		setMotorSpeed(motorB, 0);
+		delay(300);
 	}
 	else if(dif<0){
-		spin(90);
-		rev_line();
-		av(120,50);
-		spin(90);
+		av(50,60);
+		setMotorSpeed(motorC, -50);
+		delay(200);
+		while(getColorReflected(S1)>15) setMotorSpeed(motorC, -50);
+		delay(100);
+		while(getColorReflected(S1)<15) setMotorSpeed(motorC, -50);
+		delay(100);
+		while(getColorReflected(S1)>15) setMotorSpeed(motorC, -50);
+		setMotorSpeed(motorB, 0);
+		delay(300);
+
+		setMotorSpeed(motorC, -50);
+		delay(500);
+		while(getColorReflected(S1)>15) setMotorSpeed(motorC, -50);
+		setMotorSpeed(motorB, 0);
+		delay(300);
 	}
-	else spin(180);
+	else{
+		av(-50,60);
+		setMotorSpeed(motorB, 60);
+		delay(500);
+		while(getColorReflected(S1)>15) setMotorSpeed(motorB, 50);
+		setMotorSpeed(motorB, 0);
+		delay(300);
+
+		setMotorSpeed(motorC, -50);
+		delay(500);
+		while(getColorReflected(S1)>15) setMotorSpeed(motorC, -50);
+		setMotorSpeed(motorB, 0);
+		delay(300);
+	}
 
 	delay(200);
-	while(getColorReflected(S2)>15)lf();
+	int luz= getColorReflected(S2);
+	while( (luz>15&&luz<35)||(luz>50) )lf();
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(300);
 	av(0,40);
-	spin(0);
+	spin(180);
 	setMotorSpeed(motorD, -80);
 	delay(800);
 	setMotorSpeed(motorD, 30);
 	delay(500);
 
 	av(-100,70);
-	spin(180);
-	while(getColorReflected(S2)>15)lf();
+	while(getColorReflected(S2)>15) setMotorSpeed(motorB, -50);
 	setMotorSpeed(motorB, 0);
-	setMotorSpeed(motorC, 0);
 	delay(300);
-	av(50,50);
-	spin(-90);
+	spin(90);
 
 	curr_line= devpos[cdev];
 	cdev++;
