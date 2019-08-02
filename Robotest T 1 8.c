@@ -1,3 +1,4 @@
+//programa tono
 #pragma config(Sensor, S4,     , sensorEV3_GenericI2C)
 
 int deg= 320;
