@@ -79,8 +79,21 @@ void av_line(){
 	setMotorSpeed(motorC, 0);
 	delay(200);
 }
+
+void slw_line(){
+	if(getColorReflected(S1)<15){
+		setMotorSpeed(motorB, 30);
+		setMotorSpeed(motorC, 0);
+	}
+	if(getColorReflected(S1)>15){
+		setMotorSpeed(motorC, 30);
+		setMotorSpeed(motorB, 0);
+	}
+}
+
 void pick(){
 	av_line();
+	//setMotorSpeed(motorB, -60);
 	setMotorSpeed(motorB, -60);
 	delay(400);
 	while(getColorReflected(S1)>15) setMotorSpeed(motorB, -50);
@@ -90,32 +103,18 @@ void pick(){
 	setMotorSpeed(motorC, 0);
 	delay(300);
 
-	while(getColorReflected(S2)>15) lf();
+	while(getColorReflected(S2)>15) slw_line();
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(300);
-	spin(90);
-
-	/*while(getColorReflected(S1)>15) setMotorSpeed(motorB, -30);
-	setMotorSpeed(motorB, 0);
-	delay(200);
-	while(getColorReflected(S2)>15) setMotorSpeed(motorC, -30);
-	setMotorSpeed(motorC, 0);
-	delay(200);
-	while(getColorReflected(S1)<15) setMotorSpeed(motorB, 30);
-	setMotorSpeed(motorB, 0);
-	delay(200);
-	while(getColorReflected(S2)<15) setMotorSpeed(motorC, 30);
-	setMotorSpeed(motorC, 0);
-	delay(200);
-	*/
 	//spin(90);
 
-	av(0,40); //si hace falta avanzar para agarrarlo
+	av(50,40); //si hace falta avanzar para agarrarlo
 	setMotorSpeed(motorD, -100);
 	delay(800);
 	setMotorSpeed(motorD, 80);
 	delay(500);
+	spin(90);
 
 }
 void put(){
@@ -170,7 +169,7 @@ void put(){
 
 	delay(200);
 	int luz= getColorReflected(S2);
-	while( (luz>15&&luz<40)||(luz>55) )lf();
+	while( (luz>15&&luz<40)||(luz>50) )lf();
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(300);
@@ -191,6 +190,19 @@ void put(){
 	cdev++;
 }
 
+void put_tono(int opc){
+	if(opc == 1){
+	av(-100,70);
+	spin(180);
+	int luz= getColorReflected(S2);
+	while( (luz>15&&luz<40)||(luz>50)) slw_line();
+	setMotorSpeed(motorB, 0);
+	setMotorSpeed(motorC, 0);
+	}
+	if(opc == 2){
+
+	}
+}
 
 task main(){
 	startTask(turnoff);
@@ -203,20 +215,20 @@ task main(){
 	setMotorSpeed(motorC, 0);
 	delay(100);
 	spin(0);
-	av(-30, 60);
+	av(-20, 60);
 	spin(-90);
 
 	for(int l=1; l<=3; l++){
 		for(;curr_line<l; curr_line++) av_line();
-		av(50, 60);
+		av(30, 60);
 		dev= SensorValue(S4);
 		string dv= SensorValue(S4);
 		displayBigTextLine(12,dv);
 		delay(200);
 		if(dev==0){
 			pick();
-			break;
-			//put();
+			//break;
+			put_tono(1);
 		}
 	}
 
