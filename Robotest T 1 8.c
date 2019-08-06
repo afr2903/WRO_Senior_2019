@@ -109,15 +109,24 @@ void pick(){
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(300);
-	spin(90);
+
 
 
 	av(50,40); //si hace falta avanzar para agarrarlo
+
+	spin(90);
+	setMotorSpeed(motorB, 0);
+	setMotorSpeed(motorC, 0);
+	delay(300);
 	setMotorSpeed(motorD, -100);
 	delay(1500);
+	av(200,70);
+	setMotorSpeed(motorB, 0);
+	setMotorSpeed(motorC, 0);
+	delay(300);
 	setMotorSpeed(motorD, 80);
-	delay(500);
-	spin(90);
+	delay(900);
+	//spin(90);
 
   Tp = 80;
 	Kp=110;
@@ -250,5 +259,5 @@ task main(){
 		}
 	}
 
-  break;
+
 }
