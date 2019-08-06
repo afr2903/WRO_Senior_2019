@@ -1,13 +1,11 @@
-//programa tono
 #pragma config(Sensor, S4,     , sensorEV3_GenericI2C)
 
 int deg= 320;
 int dev;
 int gyro;
-int  Kp = 100;
+int  Kp = 110;
 int offset = 28; //light value
 int offset_r= 34;
-int offset_l= 28;
 int Tp = 80; //speed
 int turn =0;
 int powerRight=0;
@@ -54,8 +52,8 @@ void lf_r(){
 	powerRight= Tp-turn;
 	powerLeft= Tp+turn;
 	displayBigTextLine(9, "luz: %d",light_value);
-	setMotorSpeed(motorB, powerRight);
-	setMotorSpeed(motorC, powerLeft);
+	setMotorSpeed(motorB, powerLeft);
+	setMotorSpeed(motorC, powerRight);
 }
 void spin(int dg){
 	while(getGyroDegrees(S3)<dg-1||getGyroDegrees(S3)>dg+1){
@@ -92,8 +90,21 @@ void slw_line(){
 }
 
 void pick(){
+	Tp = 40;
+	Kp=50;
 	av_line();
+	setMotorSpeed(motorB, 0);
+	setMotorSpeed(motorC, 0);
+	delay(200);
+
+	while(getGyroDegrees(S3)<85){
+	setMotorSpeed(motorB, -60);
+	}
+	setMotorSpeed(motorB, 0);
+	delay(200);
+
 	//setMotorSpeed(motorB, -60);
+	/*
 	setMotorSpeed(motorB, -60);
 	delay(400);
 	while(getColorReflected(S1)>15) setMotorSpeed(motorB, -50);
@@ -102,12 +113,15 @@ void pick(){
 	while(getColorReflected(S1)<15) setMotorSpeed(motorC, -60);
 	setMotorSpeed(motorC, 0);
 	delay(300);
+	*/
+
 
 	while(getColorReflected(S2)>15) slw_line();
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(300);
 	//spin(90);
+
 
 	av(50,40); //si hace falta avanzar para agarrarlo
 	setMotorSpeed(motorD, -100);
@@ -116,6 +130,8 @@ void pick(){
 	delay(500);
 	spin(90);
 
+  Tp = 80;
+	Kp=110;
 }
 void put(){
 	int dif= devpos[cdev]-curr_line;
@@ -205,8 +221,11 @@ void put_tono(int opc){
 }
 
 task main(){
+
 	startTask(turnoff);
-	setMotorReversed(motorC, true);
+  setMotorReversed(motorC, true);
+
+
 	resetGyro(S3);
 	setMotorSpeed(motorD, 20);
 	delay(500);
@@ -215,21 +234,32 @@ task main(){
 	setMotorSpeed(motorC, 0);
 	delay(100);
 	spin(0);
-	av(-20, 60);
+	av(20, 60);
 	spin(-90);
 
 	for(int l=1; l<=3; l++){
-		for(;curr_line<l; curr_line++) av_line();
-		av(30, 60);
+		for(;curr_line<l; curr_line++) {
+			Tp = 40;
+	    Kp=50;
+	    av_line();
+	    Tp = 80;
+	    Kp=110;
+	    }
+	   setMotorSpeed(motorB, 0);
+	setMotorSpeed(motorC, 0);
+	delay(100);
+
+
 		dev= SensorValue(S4);
 		string dv= SensorValue(S4);
 		displayBigTextLine(12,dv);
 		delay(200);
 		if(dev==0){
 			pick();
-			//break;
-			put_tono(1);
+			break;
+			//put_tono(1);
 		}
 	}
 
+  break;
 }
