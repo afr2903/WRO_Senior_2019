@@ -104,28 +104,17 @@ void pick(){
 	delay(200);
 
 	//setMotorSpeed(motorB, -60);
-	/*
-	setMotorSpeed(motorB, -60);
-	delay(400);
-	while(getColorReflected(S1)>15) setMotorSpeed(motorB, -50);
-	setMotorSpeed(motorB, 0);
-	delay(300);
-	while(getColorReflected(S1)<15) setMotorSpeed(motorC, -60);
-	setMotorSpeed(motorC, 0);
-	delay(300);
-	*/
-
 
 	while(getColorReflected(S2)>15) slw_line();
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(300);
-	//spin(90);
+	spin(90);
 
 
 	av(50,40); //si hace falta avanzar para agarrarlo
 	setMotorSpeed(motorD, -100);
-	delay(800);
+	delay(1500);
 	setMotorSpeed(motorD, 80);
 	delay(500);
 	spin(90);
