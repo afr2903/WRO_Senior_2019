@@ -221,16 +221,22 @@ void put_tono(int opc){
 
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
-	delay(2000);
+	delay(1000);
 	}
+
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(300);
+	spin(10);
+	av(-40,60);
+	spin(0);
+	setMotorSpeed(motorD, -40);
+	delay(500);
 	setMotorSpeed(motorD, -100);
-	delay(1500);
+	delay(500);
 	setMotorSpeed(motorD, 80);
 	delay(900);
-	spin(10);
+
 }
 
 task main(){
