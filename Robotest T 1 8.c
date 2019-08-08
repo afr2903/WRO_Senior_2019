@@ -6,7 +6,7 @@ int gyro;
 int  Kp = 110;
 int offset = 28; //light value
 int offset_r= 34;
-int Tp = 80; //speed
+int Tp = 70; //speed
 int turn =0;
 int powerRight=0;
 int powerLeft=0;
@@ -44,17 +44,26 @@ void lf(){
 	setMotorSpeed(motorB, powerRight);
 	setMotorSpeed(motorC, powerLeft);
 }
+
 void lf_r(){
 	light_value= getColorReflected(S2);
 	error= light_value - offset_r;
 	turn= Kp*error;
 	turn=turn/100;
-	powerRight= Tp-turn;
-	powerLeft= Tp+turn;
+	powerLeft= (Tp-turn)*0.16;
+	powerRight= (Tp+turn)*0.16;
 	displayBigTextLine(9, "luz: %d",light_value);
-	setMotorSpeed(motorB, powerLeft);
-	setMotorSpeed(motorC, powerRight);
+
+	gyro= getGyroDegrees(S3);
+	string gyr= getGyroDegrees(S3);
+	displayBigTextLine(5, gyr);
+	powerRight2= (70+(gyro*2))*0.44;
+	powerLeft2= (70-(gyro*2))*0.44;
+
+	setMotorSpeed(motorB, powerRight+powerRight2);
+	setMotorSpeed(motorC, powerLeft+powerLeft2);
 }
+
 void spin(int dg){
 	while(getGyroDegrees(S3)<dg-1||getGyroDegrees(S3)>dg+1){
 		gyro= getGyroDegrees(S3);
@@ -90,8 +99,6 @@ void slw_line(){
 }
 
 void pick(){
-	Tp = 40;
-	Kp=50;
 	av_line();
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
@@ -110,26 +117,23 @@ void pick(){
 	setMotorSpeed(motorC, 0);
 	delay(300);
 
-
-
-	av(50,40); //si hace falta avanzar para agarrarlo
-
+	av(55,40); //si hace falta avanzar para agarrarlo
 	spin(90);
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(300);
 	setMotorSpeed(motorD, -100);
 	delay(1500);
-	av(200,70);
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(300);
 	setMotorSpeed(motorD, 80);
 	delay(900);
-	//spin(90);
 
-  Tp = 80;
-	Kp=110;
+
+
+
+
 }
 void put(){
 	int dif= devpos[cdev]-curr_line;
@@ -207,15 +211,26 @@ void put(){
 void put_tono(int opc){
 	if(opc == 1){
 	av(-100,70);
-	spin(180);
-	int luz= getColorReflected(S2);
-	while( (luz>15&&luz<40)||(luz>50)) slw_line();
+	spin(170);
+
+	while(true){
+		displayBigTextLine(7, "color:%d", getColorName(S2));
+		if(getColorName(S2)==5)break;
+		slw_line();
+	}
+
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
+	delay(2000);
 	}
-	if(opc == 2){
-
-	}
+	setMotorSpeed(motorB, 0);
+	setMotorSpeed(motorC, 0);
+	delay(300);
+	setMotorSpeed(motorD, -100);
+	delay(1500);
+	setMotorSpeed(motorD, 80);
+	delay(900);
+	spin(10);
 }
 
 task main(){
@@ -232,16 +247,14 @@ task main(){
 	setMotorSpeed(motorC, 0);
 	delay(100);
 	spin(0);
-	av(20, 60);
+	av(60, 60);
 	spin(-90);
 
 	for(int l=1; l<=3; l++){
 		for(;curr_line<l; curr_line++) {
-			Tp = 40;
-	    Kp=50;
+
 	    av_line();
-	    Tp = 80;
-	    Kp=110;
+
 	    }
 	   setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
@@ -254,8 +267,9 @@ task main(){
 		delay(200);
 		if(dev==0){
 			pick();
+			put_tono(1);
 			break;
-			//put_tono(1);
+
 		}
 	}
 
