@@ -15,6 +15,7 @@ int powerLeft2=0;
 int error=0;
 int light_value=0;
 
+
 int curr_line=0;
 int cdev=1;
 int devpos[]={0,1,3};
@@ -98,8 +99,13 @@ void slw_line(){
 	}
 }
 
-void pick(){
+void pick(int l){
+
 	av_line();
+	if(l==3)av(-100,60);
+
+
+
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(200);
@@ -109,8 +115,6 @@ void pick(){
 	}
 	setMotorSpeed(motorB, 0);
 	delay(200);
-
-	//setMotorSpeed(motorB, -60);
 
 	while(getColorReflected(S2)>15) slw_line();
 	setMotorSpeed(motorB, 0);
@@ -129,12 +133,10 @@ void pick(){
 	delay(300);
 	setMotorSpeed(motorD, 80);
 	delay(900);
-
-
-
-
-
 }
+
+
+
 void put(){
 	int dif= devpos[cdev]-curr_line;
 	if(dif>0){
@@ -215,7 +217,7 @@ void put_tono(int opc){
 
 	while(true){
 		displayBigTextLine(7, "color:%d", getColorName(S2));
-		if(getColorName(S2)==5)break;
+		if(getColorName(S2)==5 || getColorName(S2)==2)break;
 		slw_line();
 	}
 
@@ -271,12 +273,19 @@ task main(){
 		string dv= SensorValue(S4);
 		displayBigTextLine(12,dv);
 		delay(200);
-		if(dev==0){
-			pick();
-			put_tono(1);
-			break;
 
+
+
+		if(dev==0){
+				pick(l);
+			  put_tono(1);
+
+
+		   break;
 		}
+
+
+
 	}
 
 
