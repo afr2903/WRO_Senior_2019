@@ -224,7 +224,7 @@ void put_tono(int opc){
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(1000);
-	}
+
 
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
@@ -238,6 +238,34 @@ void put_tono(int opc){
 	delay(500);
 	setMotorSpeed(motorD, 80);
 	delay(900);
+	}
+	if(opc==2){
+	while(getGyroDegrees(S3)>-180)setMotorSpeed(motorC, -60);
+	while(true){
+		if(getColorName(S2)==5 || getColorName(S2)==2)break;
+		slw_line();
+	}
+	setMotorSpeed(motorB, 0);
+	setMotorSpeed(motorC, 0);
+	delay(300);
+	av(-20,60);
+	//spin(0);
+	setMotorSpeed(motorD, -40);
+	delay(500);
+	setMotorSpeed(motorD, -100);
+	delay(500);
+	setMotorSpeed(motorD, 80);
+	delay(900);
+
+	}
+}
+
+void put_luman(){
+av(-110,60);
+spin(90);
+av(-1000,60);
+spin(-90);
+rf_line();
 
 }
 
@@ -262,7 +290,7 @@ task main(){
 		for(;curr_line<l; curr_line++) {
 
 	    av_line();
-
+			av_line();
 	    }
 	   setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
@@ -278,8 +306,7 @@ task main(){
 
 		if(dev==0){
 				pick(l);
-			  put_tono(1);
-
+			  put_tono(2);
 
 		   break;
 		}
