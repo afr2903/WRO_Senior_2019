@@ -26,6 +26,13 @@ task turnoff(){
 	stopAllTasks();
 }
 
+
+void stopp(){
+	setMotorSpeed(motorB,0);
+	setMotorSpeed(motorC,0);
+	delay(500);
+}
+
 void av(int dg, int vl){
 	int aux= dg>0? 1:-1;
 	setMotorTarget(motorB, getMotorEncoder(motorB)+dg, vl);
@@ -240,39 +247,57 @@ void put_tono(int opc){
 	delay(900);
 	}
 	if(opc==2){
-	while(getGyroDegrees(S3)>-180)setMotorSpeed(motorC, -60);
-	while(true){
-		if(getColorName(S2)==5 || getColorName(S2)==2)break;
-		slw_line();
-	}
-	setMotorSpeed(motorB, 0);
-	setMotorSpeed(motorC, 0);
-	delay(300);
-	av(-20,60);
-	//spin(0);
-	setMotorSpeed(motorD, -40);
-	delay(500);
-	setMotorSpeed(motorD, -100);
-	delay(500);
-	setMotorSpeed(motorD, 80);
-	delay(900);
+		while(getGyroDegrees(S3)>-180)setMotorSpeed(motorC, -60);
+		while(true){
+			if(getColorName(S2)==5 || getColorName(S2)==2)break;
+			slw_line();
+		}
+		setMotorSpeed(motorB, 0);
+		setMotorSpeed(motorC, 0);
+		delay(300);
+		av(-20,60);
+		//spin(0);
+		setMotorSpeed(motorD, -40);
+		delay(500);
+		setMotorSpeed(motorD, -100);
+		delay(500);
+		setMotorSpeed(motorD, 80);
+		delay(900);
 
 	}
+	if(opc==3){
+		while(getGyroDegrees(S3)<170)setMotorSpeed(motorB, -60);
+		delay(50);
+		while(getColorReflected(S1)>15)setMotorSpeed(motorB, -40);
+		while(true){
+			if(getColorName(S2)==2 || getColorName(S2)==2)break;
+			slw_line();
+		}
+		stopp();
+		av(-20,60);
+		setMotorSpeed(motorD, -40);
+		delay(500);
+		setMotorSpeed(motorD, -100);
+		delay(500);
+		setMotorSpeed(motorD, 80);
+		delay(900);
+	}
+
 }
 
-void put_luman(){
-av(-110,60);
-spin(90);
-av(-1000,60);
-spin(-90);
-rf_line();
-
+void regreso(){
+	av(-200,60);
+	while(getGyroDegrees(S3)<90)setMotorSpeed(motorB, -60);
+	av_line();
+	av(100,50);
+	av_line();
 }
 
 task main(){
-
+	//setMotorSpeed(motorA,-20);
 	startTask(turnoff);
   setMotorReversed(motorC, true);
+
 
 
 	resetGyro(S3);
@@ -290,7 +315,6 @@ task main(){
 		for(;curr_line<l; curr_line++) {
 
 	    av_line();
-			av_line();
 	    }
 	   setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
@@ -306,14 +330,14 @@ task main(){
 
 		if(dev==0){
 				pick(l);
-			  put_tono(2);
-
+			  put_tono(1);
+				regreso();
 		   break;
 		}
 
 
 
 	}
-
+	stopAllTasks();
 
 }
