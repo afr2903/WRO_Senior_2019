@@ -106,6 +106,16 @@ void slw_line(){
 	}
 }
 
+void slw_line_r(){
+	if(getColorReflected(S2)>15){
+		setMotorSpeed(motorB, 30);
+		setMotorSpeed(motorC, 0);
+	}
+	if(getColorReflected(S2)<15){
+		setMotorSpeed(motorC, 30);
+		setMotorSpeed(motorB, 0);
+	}
+}
 void pick(int l){
 
 	av_line();
@@ -138,6 +148,8 @@ void pick(int l){
 	setMotorTarget(motorD, getMotorEncoder(motorD)+100, 60);
 	waitUntilMotorStop(motorD);
 	av(150,40);
+	setMotorSpeed(motorD, -80);
+	delay(800);
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(300);
@@ -288,19 +300,39 @@ void put_tono(int opc){
 
 }
 
-void regreso(){
+void regreso(int l){
 	//av(-200,60);
-	while(getGyroDegrees(S3)<180)setMotorSpeed(motorB, -60);
-	delay(100)
-	 lf_r();
+ int aux;
+ aux=getColorReflected(S2);
+ delay(400);
+ 	if(l==1){ while(getGyroDegrees(S3)<180)setMotorSpeed(motorB, -60);}
+  else {while(getGyroDegrees(S3)<160)setMotorSpeed(motorB, -60);}
+
+
+	delay(50);
+	stopp();
+
+		 if(l==1){ while(getColorReflected(S1)>15) slw_line_r();}
+     else {while(getColorReflected(S2)>15) slw_line();}
+	stopp();
+
+
+	av(60, 60);
+	spin(90);
 	/*
+	while(getColorReflected(S2)>15)setMotorSpeed(motorB, -30);
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(100);
-	spin(0);
-	av(60, 60);
-	spin(-90);
-	*/
+	while(getColorReflected(S2)<15)setMotorSpeed(motorB, -30);
+
+	setMotorSpeed(motorB, 0);
+	setMotorSpeed(motorC, 0);
+	delay(300);
+
+
+
+*/
 }
 
 task main(){
@@ -341,7 +373,7 @@ task main(){
 		if(dev==0){
 				pick(l);
 			  put_tono(1);
-				regreso();
+				regreso(l);
 		   break;
 		}
 
