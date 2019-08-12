@@ -135,6 +135,9 @@ void pick(int l){
 	delay(300);
 	setMotorSpeed(motorD, -100);
 	delay(1500);
+	setMotorTarget(motorD, getMotorEncoder(motorD)+100, 60);
+	waitUntilMotorStop(motorD);
+	av(150,40);
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(300);
@@ -237,14 +240,14 @@ void put_tono(int opc){
 	setMotorSpeed(motorC, 0);
 	delay(300);
 	spin(10);
-	av(-40,60);
+	av(-80,60);
 	spin(0);
 	setMotorSpeed(motorD, -40);
 	delay(500);
 	setMotorSpeed(motorD, -100);
 	delay(500);
-	setMotorSpeed(motorD, 80);
-	delay(900);
+	setMotorSpeed(motorD, 25);
+	delay(1000);
 	}
 	if(opc==2){
 		while(getGyroDegrees(S3)>-180)setMotorSpeed(motorC, -60);
@@ -286,11 +289,18 @@ void put_tono(int opc){
 }
 
 void regreso(){
-	av(-200,60);
-	while(getGyroDegrees(S3)<90)setMotorSpeed(motorB, -60);
-	av_line();
-	av(100,50);
-	av_line();
+	//av(-200,60);
+	while(getGyroDegrees(S3)<180)setMotorSpeed(motorB, -60);
+	delay(100)
+	 lf_r();
+	/*
+	setMotorSpeed(motorB, 0);
+	setMotorSpeed(motorC, 0);
+	delay(100);
+	spin(0);
+	av(60, 60);
+	spin(-90);
+	*/
 }
 
 task main(){
