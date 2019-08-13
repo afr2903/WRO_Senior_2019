@@ -97,6 +97,7 @@ task main(){
 	startTask(turnoff);
 	resetGyro(S3);
 	setMotorSpeed(motorD, 20);
+	setMotorSpeed(motorA, -10);
 	delay(500);
 	setMotorReversed(motorC, true);
 
