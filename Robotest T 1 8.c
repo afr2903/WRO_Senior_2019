@@ -372,6 +372,7 @@ task main(){
 			int opc= devpos[cdev]==l? 1 : devpos[cdev]<l? 2 : 3;
 				pick(l);
 			  put_tono(opc);
+			  if(cdev==2) break;
 			  regreso();
 				cdev++;
 				curr_line= curr_line+ (opc==1? -1: opc==2? -2 : 0);
