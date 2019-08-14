@@ -146,10 +146,8 @@ void pick(int l){
 	setMotorSpeed(motorD, -100);
 	delay(1500);
 
-	setMotorSpeed(motorB, 0);
-	setMotorSpeed(motorC, 0);
-	delay(300);
-	setMotorSpeed(motorD, 80);
+	stopp();
+	setMotorSpeed(motorD, 60);
 	delay(900);
 }
 
@@ -248,7 +246,7 @@ void put_tono(int opc){
 	setMotorSpeed(motorC, 0);
 	delay(300);
 	spin(10);
-	av(-80,60);
+	av(-60,60);
 	spin(0);
 	setMotorSpeed(motorD, -40);
 	delay(500);
@@ -277,7 +275,7 @@ void put_tono(int opc){
 
 	}
 	if(opc==3){
-		while(getGyroDegrees(S3)<170)setMotorSpeed(motorB, -60);
+		while(getGyroDegrees(S3)<160)setMotorSpeed(motorB, -60);
 		delay(50);
 		while(getColorReflected(S1)>15)setMotorSpeed(motorB, -40);
 		while(true){
@@ -285,8 +283,9 @@ void put_tono(int opc){
 			slw_line();
 		}
 		stopp();
-		av(-20,60);
 		spin(180);
+		av(-60,60);
+		spin(0);
 		setMotorSpeed(motorD, -40);
 		delay(500);
 		setMotorSpeed(motorD, -100);
@@ -298,14 +297,11 @@ void put_tono(int opc){
 }
 
 void regreso(){
-	//av(-200,60);
+	av(-100,60);
  int aux;
  aux=getColorReflected(S2);
  delay(400);
  	while(getGyroDegrees(S3)<180)setMotorSpeed(motorB, -60);
-
-
-
 
 	delay(50);
 	stopp();
@@ -313,7 +309,6 @@ void regreso(){
  while(getColorReflected(S1)>15) slw_line_r();
 
 	stopp();
-
 
 	av(100, 60);
 	spin(90);
@@ -332,9 +327,31 @@ void regreso(){
 
 */
 }
+void regreso_2(){
+av(-250,60);
+	stopp();
+	spin(90);
+
+	clearTimer(T1);
+	while(time1[T1]<3000){
+	gyro= getGyroDegrees(S3);
+	string gyr= getGyroDegrees(S3);
+	displayBigTextLine(5, gyr);
+	powerRight2= (70-(gyro*2))*1;
+	powerLeft2= (70+(gyro*2))*1;
+
+	setMotorSpeed(motorB, -powerRight2);
+	setMotorSpeed(motorC, -powerLeft2);
+	}
+	stopp();
+	av(170,60);
+	spin(90);
+	while(getColorReflected(S1)>15) slw_line_r();
+}
 
 task main(){
 	//setMotorSpeed(motorA,-20);
+
 	startTask(turnoff);
   setMotorReversed(motorC, true);
 
@@ -381,7 +398,9 @@ task main(){
 
 
 
+
 	}
+	regreso_2();
 	stopAllTasks();
 
 }
