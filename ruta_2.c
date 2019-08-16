@@ -30,7 +30,7 @@ task turnoff(){
 void stopp(){
 	setMotorSpeed(motorB,0);
 	setMotorSpeed(motorC,0);
-	delay(500);
+	delay(100);
 }
 
 void av(int dg, int vl){
@@ -93,6 +93,16 @@ void av_line(){
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(200);
+}
+
+void av_line2(){
+	Tp=60;
+	Kp=80;
+	clearTimer(T1);
+	while(time1[T1]<150) lf();
+	while(getColorReflected(S2)>15) lf();
+	//stopp();
+	Tp=70;
 }
 
 void slw_line(){
@@ -356,9 +366,12 @@ task main(){
   setMotorReversed(motorC, true);
 
 	resetGyro(S3);
+
 	setMotorSpeed(motorD, 20);
 	delay(500);
-
+  stopp();
+  av(150,70);
+  stopp();
 
 	while(getGyroDegrees(S3)>-90){
 	setMotorSpeed(motorC, -70);
@@ -378,11 +391,36 @@ task main(){
 	setMotorSpeed(motorB, -powerRight2);
 	setMotorSpeed(motorC, -powerLeft2);
 	}
-	av(80,60);
-	while(getGyroDegrees(S3)>-80) setMotorSpeed(motorC, -70);
+	av(300,70);
+	while(getGyroDegrees(S3)>-70) setMotorSpeed(motorC, -70);
 	while(getColorReflected(S1)>15) setMotorSpeed(motorC,-70);
 	stopp();
-	slw_line();
+	clearTimer(T1);
+	while(time1[T1]<700){
+		slw_line();
+  }
+	stopp();
+	av(50,70);
+	repeat(4){
+		av_line2();
+	}
+   stopp();
+   av(100,70);
+   spin(0);
+   stopp();
 
-
+   setMotorSpeed(motorB, -80);
+	 setMotorSpeed(motorC, -80);
+   delay(1200);
+   stopp();
+   av(160,70);
+   setMotorSpeed(motorD, -80);
+	delay(800);
+	setMotorSpeed(motorD, 30);
+	delay(500);
+   spin(90);
+   repeat(4){
+   av_line();
+   }
+   stopalltasks();
 }
