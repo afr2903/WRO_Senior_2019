@@ -277,7 +277,7 @@ void put_tono(int opc){
 
 	}
 	if(opc==3){
-		while(getGyroDegrees(S3)<170)setMotorSpeed(motorB, -60);
+		while(getGyroDegrees(S3)<160)setMotorSpeed(motorB, -60);
 		delay(50);
 		while(getColorReflected(S1)>15)setMotorSpeed(motorB, -40);
 		while(true){
@@ -342,6 +342,7 @@ task main(){
 	resetGyro(S3);
 	setMotorSpeed(motorD, 20);
 	delay(500);
+
 	av(-250,60);
 	stopp();
 	spin(90);
