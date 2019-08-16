@@ -138,7 +138,7 @@ void pick(int l){
 	setMotorSpeed(motorC, 0);
 	delay(300);
 
-	av(40,40); //si hace falta avanzar para agarrarlo
+	av(30,40); //si hace falta avanzar para agarrarlo
 	spin(90);
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
