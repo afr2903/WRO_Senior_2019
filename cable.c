@@ -1,7 +1,7 @@
 #pragma config(Sensor, S4,     , sensorEV3_GenericI2C)
 int gyro;
 int  Kp = 110;
-int offset = 25; //light value
+int offset = 26; //light value
 int offset_r= 31;
 int Tp = 70; //speed
 int turn =0;
@@ -128,7 +128,7 @@ task main(){
 	delay(400);
 
 	clearTimer(T1);
-	while(time1(T1)<500) lf();
+	while(time1(T1)<600) lf();
 	stopp();
 	while(getColorReflected(S2)>15) lf();
 	stopp();
@@ -196,25 +196,37 @@ task main(){
 	while(getColorReflected(S1)>15) setMotorSpeed(motorC, 50);
 	stopp();
 
+	clearTimer(T1);
+	while(time1(T1)<600) lf_slw();
+	stopp();
 	while(getColorReflected(S2)>15) lf();
 	stopp();
+
+	while(getColorReflected(S1)>15) setMotorSpeed(motorC, 40);
+	stopp();
+	while(getColorReflected(S1)<15) setMotorSpeed(motorC, 30);
+	stopp();
+	while(getColorReflected(S1)>15) setMotorSpeed(motorB, 70);
+	stopp();
+	while(getColorReflected(S1)<15) setMotorSpeed(motorB, 70);
+	stopp();
+	av(-200, 40);
 	setMotorSpeed(motorD, -100);
 	delay(800);
 	setMotorTarget(motorD, getMotorEncoder(motorD)+100, 50);
 	waitUntilMotorStop(motorD);
-	setMotorSpeed(motorC, -30);
-	delay(100);
-	stopp();
 	clearTimer(T1);
 	while(time1(T1)<1200) lf_slw();
 	stopp();
 	spin(90);
-	setMotorSpeed(motorD, 30);
+	setMotorSpeed(motorD, 20);
 	delay(1000);
 
-	spin(180);
-	while(getColorReflected(S2)>15) setMotorSpeed(motorB, 50);
-	delay(50);
+	spin(173);
+	av(100, 50);
+	while(getColorReflected(S1)>15) setMotorSpeed(motorC, 40);
+	stopp();
+	while(getColorReflected(S2)>15) setMotorSpeed(motorB, 40);
 	stopp();
 	repeat(5) av_line();
 	setMotorSpeed(motorB, 40);
@@ -228,11 +240,11 @@ task main(){
 		stopp();
 	}
 
-	spin(-90);
+	spin(-87);
 	av_line();
 	av_line();
 	setMotorSpeed(motorB, -20);
-	while(getColorReflected(S2)>15) setMotorSpeed(motorC, -20);
+	while(getColorReflected(S1)>15) setMotorSpeed(motorC, -20);
 	stopp();
 
 	setMotorSpeed(motorC, -50);
@@ -251,7 +263,7 @@ task main(){
 	while(getColorReflected(S2)<15) setMotorSpeed(motorC, -20);
 	stopp();
 	av(30, 40);
-	spin(0);
+	spin(5);
 
 	setMotorSpeed(motorD, -30);
 	delay(900);
