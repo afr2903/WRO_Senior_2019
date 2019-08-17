@@ -53,6 +53,18 @@ void lf(){
 	setMotorSpeed(motorC, powerLeft);
 }
 
+void lf2(){
+	light_value= getColorReflected(S2);
+	error= light_value - offset;
+	turn= Kp*error;
+	turn=turn/100;
+	powerLeft= Tp-turn;
+	powerRight= Tp+turn;
+	//displayBigTextLine(1, "luz2: %d",light_value);
+	setMotorSpeed(motorB, powerRight);
+	setMotorSpeed(motorC, powerLeft);
+}
+
 void lf_r(){
 	light_value= getColorReflected(S2);
 	error= light_value - offset_r;
@@ -101,6 +113,16 @@ void av_line2(){
 	clearTimer(T1);
 	while(time1[T1]<150) lf();
 	while(getColorReflected(S2)>15) lf();
+	//stopp();
+	Tp=70;
+}
+
+void av_line3(){
+	Tp=60;
+	Kp=80;
+	clearTimer(T1);
+	while(time1[T1]<150) lf2();
+	while(getColorReflected(S1)>15) lf2();
 	//stopp();
 	Tp=70;
 }
@@ -370,7 +392,7 @@ task main(){
 	setMotorSpeed(motorD, 20);
 	delay(500);
   stopp();
-  av(150,70);
+  av(100,70);
   stopp();
 
 	while(getGyroDegrees(S3)>-90){
@@ -396,7 +418,7 @@ task main(){
 	while(getColorReflected(S1)>15) setMotorSpeed(motorC,-70);
 	stopp();
 	clearTimer(T1);
-	while(time1[T1]<700){
+	while(time1[T1]<900){
 		slw_line();
   }
 	stopp();
@@ -418,9 +440,10 @@ task main(){
 	delay(800);
 	setMotorSpeed(motorD, 30);
 	delay(500);
+	av(-60,60)
    spin(90);
    repeat(4){
-   av_line();
+   av_line3();
    }
    stopalltasks();
 }
