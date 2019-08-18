@@ -7,6 +7,7 @@ int Tp = 70; //speed
 int turn =0;
 int powerRight=0;
 int powerLeft=0;
+
 int powerRight2=0;
 int powerLeft2=0;
 int error=0;
@@ -103,6 +104,12 @@ task main(){
 	delay(500);
 	setMotorReversed(motorC, true);
 	av_line();
+	while(getColorReflected(S2)>15) setMotorSpeed(motorB, 40);
+	stopp();
+	while(getColorReflected(S1)>15) setMotorSpeed(motorC, 40);
+	stopp();
+	spin(0);
+	av(-200, 50);
 	setMotorSpeed(motorD, -100);
 	delay(800);
 	setMotorTarget(motorD, getMotorEncoder(motorD)+100, 50);
@@ -111,11 +118,11 @@ task main(){
 	setMotorSpeed(motorB, 0);
 	delay(100);
 	clearTimer(T1);
-	while(time1(T1)<1200) lf_slw();
+	while(time1(T1)<1300) lf_slw();
 	stopp();
 	spin(0);
 	setMotorSpeed(motorD, 30);
-	delay(1000);
+	delay(1500);
 
 	spin(180);
 	while(getColorReflected(S1)>15)setMotorSpeed(motorB, 50);
@@ -128,8 +135,9 @@ task main(){
 	delay(400);
 
 	clearTimer(T1);
-	while(time1(T1)<600) lf();
+	while(time1(T1)<600) lf_slw();
 	stopp();
+	spin(0);
 	while(getColorReflected(S2)>15) lf();
 	stopp();
 	//setMotorSpeed(motorB, -20);
@@ -176,29 +184,38 @@ task main(){
 	av(-250, 50);
 	setMotorSpeed(motorD, 50);
 	delay(1000);
-	spin(0);
 
 
 
 
 
 
-	while(getColorReflected(S2)>15) setMotorSpeed(motorB, -50);
+	spin(-90);
+	clearTimer(T1);
+	while(time1[T1]<1600){
+		gyro= getGyroDegrees(S3);
+		string gyr= getGyroDegrees(S3);
+		displayBigTextLine(5, gyr);
+		powerRight2= (70-(gyro*2))*1;
+		powerLeft2= (70+(gyro*2))*1;
+
+		setMotorSpeed(motorB, -powerRight2);
+		setMotorSpeed(motorC, -powerLeft2);
+	}
+	stopp();
+	resetGyro(S3);
+	delay(500);
+
+	while(getGyroDegrees(S3)>-70) setMotorSpeed(motorB, 70);
 	delay(50);
-	while(getColorReflected(S2)<15) setMotorSpeed(motorB, -40);
+	while(getColorReflected(S1)>15) setMotorSpeed(motorB, 50);
+	delay(50);
+	while(getColorReflected(S1)<15) setMotorSpeed(motorB, 30);
 	stopp();
-	spin(90);
-	av_line();
-	av_line();
-
-	setMotorSpeed(motorC, 50);
-	delay(300);
-	while(getColorReflected(S1)>15) setMotorSpeed(motorC, 50);
-	stopp();
+	spin(-90);
 
 	clearTimer(T1);
-	while(time1(T1)<600) lf_slw();
-	stopp();
+	while(time1[T1]<600) lf();
 	while(getColorReflected(S2)>15) lf();
 	stopp();
 
@@ -210,19 +227,19 @@ task main(){
 	stopp();
 	while(getColorReflected(S1)<15) setMotorSpeed(motorB, 70);
 	stopp();
-	av(-200, 40);
+	av(-220, 40);
 	setMotorSpeed(motorD, -100);
 	delay(800);
 	setMotorTarget(motorD, getMotorEncoder(motorD)+100, 50);
 	waitUntilMotorStop(motorD);
 	clearTimer(T1);
-	while(time1(T1)<1200) lf_slw();
+	while(time1(T1)<900) lf_slw();
 	stopp();
-	spin(90);
+	spin(0);
 	setMotorSpeed(motorD, 20);
-	delay(1000);
+	delay(1500);
 
-	spin(173);
+	spin(177);
 	av(100, 50);
 	while(getColorReflected(S1)>15) setMotorSpeed(motorC, 40);
 	stopp();
