@@ -15,6 +15,7 @@ int powerLeft2=0;
 int error=0;
 int light_value=0;
 
+long num_rand=0;
 
 int curr_line=0;
 int cdev=1;
@@ -118,6 +119,7 @@ void slw_line_r(){
 }
 void pick(int l){
 
+	num_rand=(randLong() % (4-1)) + 1;
 	av_line();
 	if(l==3)av(-100,60);
 
@@ -149,6 +151,19 @@ void pick(int l){
 	stopp();
 	setMotorSpeed(motorD, 60);
 	delay(900);
+
+	repeat(num_rand){
+		setMotorSpeed(motorA,100);
+		delay(300);
+		setMotorSpeed(motorA,0);
+		delay(100);
+		setMotorSpeed(motorA,-100);
+		delay(300);
+		setMotorSpeed(motorA,0);
+		delay(100);
+
+	}
+
 }
 
 
@@ -254,6 +269,7 @@ void put_tono(int opc){
 	delay(500);
 	setMotorSpeed(motorD, 25);
 	delay(1000);
+	spin(0);
 	}
 	if(opc==2){
 		while(getGyroDegrees(S3)>-180)setMotorSpeed(motorC, -60);
@@ -272,7 +288,7 @@ void put_tono(int opc){
 		delay(500);
 		setMotorSpeed(motorD, 80);
 		delay(900);
-
+		spin(0);
 	}
 	if(opc==3){
 		while(getGyroDegrees(S3)<160)setMotorSpeed(motorB, -60);
@@ -292,7 +308,8 @@ void put_tono(int opc){
 		delay(500);
 		setMotorSpeed(motorD, 80);
 		delay(900);
-	}
+		spin(0);
+		}
 
 }
 
@@ -377,20 +394,43 @@ task main(){
 	setMotorSpeed(motorC, 0);
 	delay(100);
 
+	clearTimer(T1);
+	while(time1[T1]<50){
+	gyro= getGyroDegrees(S3);
+	string gyr= getGyroDegrees(S3);
+	displayBigTextLine(5, gyr);
+	powerRight2= (70+(gyro*2))*1;
+	powerLeft2= (70-(gyro*2))*1;
 
+	setMotorSpeed(motorB, +powerRight2);
+	setMotorSpeed(motorC, +powerLeft2);
+	}
+		stopp();
 		dev= SensorValue(S4);
 		string dv= SensorValue(S4);
 		displayBigTextLine(12,dv);
 		delay(200);
-
+    srand(nSysTime);
 
 
 		if(dev==0){
 			int opc= devpos[cdev]==l? 1 : devpos[cdev]<l? 2 : 3;
+
 				pick(l);
 			  put_tono(opc);
 			  if(cdev==2) break;
 			  regreso();
+			  repeat(4-num_rand){
+					setMotorSpeed(motorA,100);
+					delay(300);
+					setMotorSpeed(motorA,0);
+					delay(100);
+					setMotorSpeed(motorA,-100);
+					delay(300);
+					setMotorSpeed(motorA,0);
+					delay(100);
+
+				}
 				cdev++;
 				curr_line= curr_line+ (opc==1? -1: opc==2? -2 : 0);
 		   //break;
