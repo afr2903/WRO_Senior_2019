@@ -31,7 +31,7 @@ task turnoff(){
 void stopp(){
 	setMotorSpeed(motorB,0);
 	setMotorSpeed(motorC,0);
-	delay(500);
+	delay(100);
 }
 
 void av(int dg, int vl){
