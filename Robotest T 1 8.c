@@ -54,6 +54,38 @@ void lf(){
 	setMotorSpeed(motorC, powerLeft);
 }
 
+void lf2(){
+	light_value= getColorReflected(S2);
+	error= light_value - offset;
+	turn= Kp*error;
+	turn=turn/100;
+	powerLeft= Tp-turn;
+	powerRight= Tp+turn;
+	//displayBigTextLine(1, "luz2: %d",light_value);
+	setMotorSpeed(motorB, powerRight);
+	setMotorSpeed(motorC, powerLeft);
+}
+
+void av_line2(){
+	Tp=60;
+	Kp=80;
+	clearTimer(T1);
+	while(time1[T1]<150) lf();
+	while(getColorReflected(S2)>15) lf();
+	//stopp();
+	Tp=70;
+}
+
+void av_line3(){
+	Tp=60;
+	Kp=80;
+	clearTimer(T1);
+	while(time1[T1]<150) lf2();
+	while(getColorReflected(S1)>15) lf2();
+	//stopp();
+	Tp=70;
+}
+
 void lf_r(){
 	light_value= getColorReflected(S2);
 	error= light_value - offset_r;
@@ -134,24 +166,38 @@ void pick(int l){
 	}
 	setMotorSpeed(motorB, 0);
 	delay(200);
-
-	while(getColorReflected(S2)>15) slw_line();
+ while(getColorReflected(S2)>15) slw_line();
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(300);
 
-	av(30,40); //si hace falta avanzar para agarrarlo
+
+	setMotorSpeed(motorB, 0);
+	setMotorSpeed(motorC, 0);
+	delay(300);
+
+	av(160,40); //si hace falta avanzar para agarrarlo
 	spin(90);
+	av(-140,40);
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(300);
-	setMotorSpeed(motorD, -100);
-	delay(1500);
+
+	setMotorSpeed(motorD, -50);
+	delay(800);
+
+	stopp();
+	setMotorTarget(motorD, getMotorEncoder(motorD)+100, 50);
+	waitUntilMotorStop(motorD);
+	//delay(200);
+
+	av(20,50);
+  setMotorSpeed(motorD, -100);
+	delay(800);
 
 	stopp();
 	setMotorSpeed(motorD, 60);
 	delay(900);
-
 	repeat(num_rand){
 		setMotorSpeed(motorA,100);
 		delay(300);
@@ -410,7 +456,7 @@ task main(){
 		string dv= SensorValue(S4);
 		displayBigTextLine(12,dv);
 		delay(200);
-    srand(nSysTime);
+    srand(nSysTime);//borrar es para random
 
 
 		if(dev==0){
