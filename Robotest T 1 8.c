@@ -175,9 +175,9 @@ void pick(int l){
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(300);
-
-	av(160,40); //si hace falta avanzar para agarrarlo
 	spin(90);
+	av(160,20); //si hace falta avanzar para agarrarlo
+	spin(0);
 	av(-140,40);
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
@@ -187,17 +187,18 @@ void pick(int l){
 	delay(800);
 
 	stopp();
-	setMotorTarget(motorD, getMotorEncoder(motorD)+100, 50);
+	setMotorTarget(motorD, getMotorEncoder(motorD)+90, 50);
 	waitUntilMotorStop(motorD);
 	//delay(200);
 
 	av(20,50);
+	spin(0);
   setMotorSpeed(motorD, -100);
 	delay(800);
 
 	stopp();
-	setMotorSpeed(motorD, 60);
-	delay(900);
+	setMotorSpeed(motorD, 40);
+	delay(1000);
 	repeat(num_rand){
 		setMotorSpeed(motorA,100);
 		delay(300);
@@ -381,13 +382,9 @@ void regreso(){
 	setMotorSpeed(motorC, 0);
 	delay(100);
 	while(getColorReflected(S2)<15)setMotorSpeed(motorB, -30);
-
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(300);
-
-
-
 */
 }
 void regreso_2(){
