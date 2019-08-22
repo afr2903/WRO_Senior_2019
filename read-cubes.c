@@ -13,6 +13,7 @@ int deg= 320;
 int dev;
 int gyro;
 int  Kp = 110;
+int offset = 28;
 int offset_r = 34; //light value
 int Tp = 70; //speed
 int turn =0;
@@ -23,6 +24,11 @@ int powerLeft2=0;
 int error=0;
 int light_value=0;
 
+void stopp(){
+	setMotorSpeed(motorB, 0);
+	setMotorSpeed(motorC, 0);
+	delay(100);
+}
 void av(int dg, int vl){
 	int aux= dg>0? 1:-1;
 	setMotorTarget(motorB, getMotorEncoder(motorB)+dg, vl);
@@ -49,18 +55,29 @@ void lf_r(){
 	error= light_value - offset_r;
 	turn= Kp*error;
 	turn=turn/100;
-	powerLeft= (Tp-turn)*0.16;
-	powerRight= (Tp+turn)*0.16;
+	powerLeft= (Tp-turn)*0.13;
+	powerRight= (Tp+turn)*0.13;
 	displayBigTextLine(9, "luz: %d",light_value);
 
 	gyro= getGyroDegrees(S3);
 	string gyr= getGyroDegrees(S3);
 	displayBigTextLine(5, gyr);
-	powerRight2= (70+(gyro*2))*0.44;
-	powerLeft2= (70-(gyro*2))*0.44;
+	powerRight2= (70+(gyro*2))*0.47;
+	powerLeft2= (70-(gyro*2))*0.47;
 
 	setMotorSpeed(motorB, powerRight+powerRight2);
 	setMotorSpeed(motorC, powerLeft+powerLeft2);
+}
+void lf2(){
+	light_value= getColorReflected(S2);
+	error= light_value - offset;
+	turn= Kp*error;
+	turn=turn/100;
+	powerLeft= Tp-turn;
+	powerRight= Tp+turn;
+	//displayBigTextLine(1, "luz2: %d",light_value);
+	setMotorSpeed(motorB, powerRight);
+	setMotorSpeed(motorC, powerLeft);
 }
 
 task read_cubes(){
@@ -86,6 +103,8 @@ task turnoff(){
 task main(){
 	setMotorReversed(motorC, true);
 	startTask(turnoff);
+	setMotorSpeed(motorD, 20);
+	delay(500);
 	setSoundVolume(40);
 	//setMotorSpeed(motorD, 20);
 	resetGyro(S3);
@@ -109,11 +128,13 @@ task main(){
 		delay(50);
 	}
 	delay(600);
+	spin(0);
+	av(-200, 50);
 
 
 	startTask(read_cubes);
 	while(!finish&&getColorReflected(S1)>10) lf_r();
-	delay(100);
+	stopp();
 	while(getColorReflected(S1)>10) lf_r();
 	setMotorSpeed(motorB,0);
 	setMotorSpeed(motorC,0);
@@ -125,6 +146,11 @@ task main(){
 		delay(500);
 	}
 	for(int j=1; j<=4; j++) pos[cubes[j]]=j;
+	pos[2]= (pos[2]+1)%4;
+	pos[3]= (pos[3]+0)%4;
+	pos[4]= (pos[4]+2)%4;
+	pos[5]= (pos[5]+1)%4;
+
 
 	av(-50, 50);
 	setMotorSpeed(motorB,40);
@@ -132,11 +158,21 @@ task main(){
 	delay(500);
 	while(getColorReflected(S2)>20) setMotorSpeed(motorB, 40);
 	spin(-90);
+
+	clearTimer(T1);
+	while(time1[T1] < 1000) lf_r();
+	stopp();
+	Tp=60;
+	Kp=80;
 	repeat(4){
 		clearTimer(T1);
-		while(time1[T1] < 500) lf_r();
-		while(getColorReflected(S1)>20) lf_r();
+		while(time1[T1] < 300) lf2();
+		while(getColorReflected(S1)>20) lf2();
 	}
+	Kp = 110;
+	Tp = 70;
+
+
 	setMotorSpeed(motorB,0);
 	setMotorSpeed(motorC,0);
 }
