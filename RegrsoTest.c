@@ -239,10 +239,7 @@ void put_tono(int opc){
 		slw_line();
 	}
 
-	setMotorSpeed(motorB, 0);
-	setMotorSpeed(motorC, 0);
-	delay(1000);
-
+	stopp();
 
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
