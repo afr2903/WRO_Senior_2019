@@ -151,8 +151,7 @@ void slw_line_r(){
 }
 void pick(int l){
 
-	//num_rand=(randLong() % (4-1)) + 1;
-	num_rand= 3;
+	num_rand=(randLong() % (4-1)) + 1;
 	av_line();
 	if(l==3)av(-100,60);
 
@@ -194,14 +193,14 @@ void pick(int l){
 	waitUntilMotorStop(motorD);
 	//delay(200);
 
-	av(20,50);
+	av(30,50);
 	spin(0);
   setMotorSpeed(motorD, -100);
 	delay(800);
 
 	stopp();
-	setMotorSpeed(motorD, 20);
-	delay(800);
+	setMotorSpeed(motorD, 10);
+	delay(1500);
 	setMotorSpeed(motorD, 0);
 	delay(50);
 	setMotorSpeed(motorD, 60);

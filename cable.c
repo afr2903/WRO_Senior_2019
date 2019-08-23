@@ -43,6 +43,17 @@ void lf(){
 	setMotorSpeed(motorB, powerRight);
 	setMotorSpeed(motorC, powerLeft);
 }
+void lf2(){
+	light_value= getColorReflected(S2);
+	error= light_value - offset;
+	turn= Kp*error;
+	turn=turn/100;
+	powerLeft= Tp-turn;
+	powerRight= Tp+turn;
+	//displayBigTextLine(1, "luz2: %d",light_value);
+	setMotorSpeed(motorB, powerRight);
+	setMotorSpeed(motorC, powerLeft);
+}
 void lf_slw(){
 	if(getColorReflected(S1)<15){
 		setMotorSpeed(motorB, 30);
@@ -245,7 +256,21 @@ task main(){
 	stopp();
 	while(getColorReflected(S2)>15) setMotorSpeed(motorB, 40);
 	stopp();
-	repeat(5) av_line();
+	clearTimer(T1);
+	while(time1[T1] < 500) lf_r();
+	stopp();
+	spin(0);
+	Tp=60;
+	Kp=80;
+	repeat(5){
+		clearTimer(T1);
+		while(time1[T1] < 300) lf2();
+		while(getColorReflected(S1)>20) lf2();
+	}
+	Kp = 110;
+	Tp = 70;
+
+
 	setMotorSpeed(motorB, 40);
 	delay(400);
 	repeat(2){

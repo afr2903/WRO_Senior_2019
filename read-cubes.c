@@ -114,7 +114,7 @@ task main(){
 	delay(200);
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
-	repeat(2){
+	repeat(1){
 		while(getColorReflected(S2)>20) setMotorSpeed(motorB, 40);
 		delay(50);
 		while(getColorReflected(S2)<20) setMotorSpeed(motorB, 40);
@@ -129,7 +129,7 @@ task main(){
 	}
 	delay(600);
 	spin(0);
-	av(-200, 50);
+	//av(-200, 50);
 
 
 	startTask(read_cubes);
@@ -152,7 +152,7 @@ task main(){
 	pos[5]= (pos[5]+1)%4;
 
 
-	av(-50, 50);
+	av(-100, 50);
 	setMotorSpeed(motorB,40);
 	setMotorSpeed(motorC,0);
 	delay(500);
@@ -160,7 +160,7 @@ task main(){
 	spin(-90);
 
 	clearTimer(T1);
-	while(time1[T1] < 1000) lf_r();
+	while(time1[T1] < 500) lf_r();
 	stopp();
 	Tp=60;
 	Kp=80;
