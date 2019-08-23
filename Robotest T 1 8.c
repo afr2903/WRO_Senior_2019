@@ -151,7 +151,8 @@ void slw_line_r(){
 }
 void pick(int l){
 
-	num_rand=(randLong() % (4-1)) + 1;
+	//num_rand=(randLong() % (4-1)) + 1;
+	num_rand= 3;
 	av_line();
 	if(l==3)av(-100,60);
 
@@ -166,6 +167,8 @@ void pick(int l){
 	}
 	setMotorSpeed(motorB, 0);
 	delay(200);
+
+	av(-150,60);
  while(getColorReflected(S2)>15) slw_line();
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
@@ -176,15 +179,15 @@ void pick(int l){
 	setMotorSpeed(motorC, 0);
 	delay(300);
 	spin(90);
-	av(160,20); //si hace falta avanzar para agarrarlo
+	//av(160,20); //si hace falta avanzar para agarrarlo
 	spin(0);
-	av(-140,40);
+	//av(-140,40);
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
 	delay(300);
 
 	setMotorSpeed(motorD, -50);
-	delay(800);
+	delay(1300);
 
 	stopp();
 	setMotorTarget(motorD, getMotorEncoder(motorD)+90, 50);
@@ -197,8 +200,13 @@ void pick(int l){
 	delay(800);
 
 	stopp();
-	setMotorSpeed(motorD, 40);
-	delay(1000);
+	setMotorSpeed(motorD, 20);
+	delay(800);
+	setMotorSpeed(motorD, 0);
+	delay(50);
+	setMotorSpeed(motorD, 60);
+	delay(400);
+
 	repeat(num_rand){
 		setMotorSpeed(motorA,100);
 		delay(300);
