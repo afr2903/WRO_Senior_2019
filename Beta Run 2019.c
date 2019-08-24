@@ -172,7 +172,7 @@ void regreso_2(){
 	stopp();
 	resetGyro(S3);
 	delay(500);
-	av(170,60);
+	av(190,60);
 	spin(90);
 	while(getColorReflected(S1)>15) slw_line_r();
 }
@@ -441,8 +441,6 @@ task main(){
 			int opc= devpos[cdev]==l? 1 : devpos[cdev]<l? 2 : 3;
 			pick(l);
 			put(opc);
-			if(cdev==2) break;
-			regreso();
 			repeat((4-cubes[cdev])%4){
 				setMotorSpeed(motorA,100);
 				delay(300);
@@ -452,8 +450,9 @@ task main(){
 				delay(300);
 				setMotorSpeed(motorA,0);
 				delay(100);
-
 			}
+			if(cdev==2) break;
+			regreso();
 			cdev++;
 			curr_line= curr_line+ (opc==1? -1: opc==2? -2 : 0);
 			//break;
