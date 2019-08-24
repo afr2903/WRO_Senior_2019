@@ -384,16 +384,17 @@ void put_tono2(int opc){
 		setMotorSpeed(motorC, -80);
 		delay(1200);
 		stopp();
-		av(160,70);
+		resetGyro(S3);
+		delay(500);
+
+		av(180,70);
 		setMotorSpeed(motorD, -80);
 		delay(800);
 		setMotorSpeed(motorD, 30);
 		delay(500);
 		av(-60,60);
 		spin(90);
-		repeat(4){
-			av_line3();
-		}
+		repeat(4)av_line3();
 		av(60,60);
 		spin(-90);
 	}
@@ -435,9 +436,8 @@ void put_tono2(int opc){
 		stopp();
 		spin(90);
 		av(50,70);
-		repeat(4){
-			av_line3();
-		}
+		repeat(4)av_line3();
+
 		stopp();
 		av(100,70);
 		spin(-90);
@@ -447,7 +447,9 @@ void put_tono2(int opc){
 		setMotorSpeed(motorC, -80);
 		delay(1200);
 		stopp();
-		av(160,70);
+		resetGyro(S3);
+		delay(500);
+		av(180,70);
 		setMotorSpeed(motorD, -80);
 		delay(800);
 		setMotorSpeed(motorD, 30);
@@ -859,6 +861,12 @@ task main(){
 			//break;
 		}
 	}
+
+	av(-100,70);
+	spin(90);
+	setMotorSpeed(motorB, 80);
+	setMotorSpeed(motorC, 90);
+	delay(2000);
 
 
 	stopAllTasks();
