@@ -206,7 +206,7 @@ void pick(int l){
 	setMotorSpeed(motorD, 60);
 	delay(400);
 
-	repeat(num_rand){
+	repeat(cubes[cdev]){
 		setMotorSpeed(motorA,100);
 		delay(300);
 		setMotorSpeed(motorA,0);
@@ -220,82 +220,7 @@ void pick(int l){
 
 }
 
-
-
-void put(){
-	int dif= devpos[cdev]-curr_line;
-	if(dif>0){
-		av(-50,60);
-		setMotorSpeed(motorB, 60);
-		delay(500);
-		while(getColorReflected(S1)>15) setMotorSpeed(motorB, 50);
-		setMotorSpeed(motorB, 0);
-		delay(300);
-
-		av_line();
-		setMotorSpeed(motorC, -50);
-		delay(500);
-		while(getColorReflected(S1)>15) setMotorSpeed(motorC, -50);
-		setMotorSpeed(motorB, 0);
-		delay(300);
-	}
-	else if(dif<0){
-		av(50,60);
-		setMotorSpeed(motorC, -50);
-		delay(200);
-		while(getColorReflected(S1)>15) setMotorSpeed(motorC, -50);
-		delay(100);
-		while(getColorReflected(S1)<15) setMotorSpeed(motorC, -50);
-		delay(100);
-		while(getColorReflected(S1)>15) setMotorSpeed(motorC, -50);
-		setMotorSpeed(motorB, 0);
-		delay(300);
-
-		setMotorSpeed(motorC, -50);
-		delay(500);
-		while(getColorReflected(S1)>15) setMotorSpeed(motorC, -50);
-		setMotorSpeed(motorB, 0);
-		delay(300);
-	}
-	else{
-		av(-50,60);
-		setMotorSpeed(motorB, 60);
-		delay(500);
-		while(getColorReflected(S1)>15) setMotorSpeed(motorB, 50);
-		setMotorSpeed(motorB, 0);
-		delay(300);
-
-		setMotorSpeed(motorC, -50);
-		delay(500);
-		while(getColorReflected(S1)>15) setMotorSpeed(motorC, -50);
-		setMotorSpeed(motorB, 0);
-		delay(300);
-	}
-
-	delay(200);
-	int luz= getColorReflected(S2);
-	while( (luz>15&&luz<40)||(luz>50) )lf();
-	setMotorSpeed(motorB, 0);
-	setMotorSpeed(motorC, 0);
-	delay(300);
-	av(0,40);
-	spin(180);
-	setMotorSpeed(motorD, -80);
-	delay(800);
-	setMotorSpeed(motorD, 30);
-	delay(500);
-
-	av(-100,70);
-	while(getColorReflected(S2)>15) setMotorSpeed(motorB, -50);
-	setMotorSpeed(motorB, 0);
-	delay(300);
-	spin(90);
-
-	curr_line= devpos[cdev];
-	cdev++;
-}
-
-void put_tono(int opc){
+void put(int opc){
 	if(opc == 1){
 	av(-100,70);
 	spin(170);
@@ -383,17 +308,8 @@ void regreso(){
 
 	av(100, 60);
 	spin(90);
-	/*
-	while(getColorReflected(S2)>15)setMotorSpeed(motorB, -30);
-	setMotorSpeed(motorB, 0);
-	setMotorSpeed(motorC, 0);
-	delay(100);
-	while(getColorReflected(S2)<15)setMotorSpeed(motorB, -30);
-	setMotorSpeed(motorB, 0);
-	setMotorSpeed(motorC, 0);
-	delay(300);
-*/
 }
+
 void regreso_2(){
 av(-250,60);
 	stopp();
@@ -467,10 +383,10 @@ task main(){
 			int opc= devpos[cdev]==l? 1 : devpos[cdev]<l? 2 : 3;
 
 				pick(l);
-			  put_tono(opc);
+			  put(opc);
 			  if(cdev==2) break;
 			  regreso();
-			  repeat(4-num_rand){
+			  repeat((4-cubes[cdev])%4){
 					setMotorSpeed(motorA,100);
 					delay(300);
 					setMotorSpeed(motorA,0);
