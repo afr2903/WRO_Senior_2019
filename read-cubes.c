@@ -24,6 +24,8 @@ int powerLeft2=0;
 int error=0;
 int light_value=0;
 
+
+
 void stopp(){
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
