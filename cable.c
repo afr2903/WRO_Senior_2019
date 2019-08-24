@@ -230,23 +230,23 @@ task main(){
 	while(getColorReflected(S2)>15) lf();
 	stopp();
 
-	while(getColorReflected(S1)>15) setMotorSpeed(motorC, 40);
+	while(getColorReflected(S1)>15) setMotorSpeed(motorC, 70);
 	stopp();
-	while(getColorReflected(S1)<15) setMotorSpeed(motorC, 30);
+	while(getColorReflected(S1)<15) setMotorSpeed(motorC, 70);
 	stopp();
 	while(getColorReflected(S1)>15) setMotorSpeed(motorB, 70);
 	stopp();
 	while(getColorReflected(S1)<15) setMotorSpeed(motorB, 70);
 	stopp();
-	av(-240, 40);
+	av(-280, 40);
 	setMotorSpeed(motorD, -100);
 	delay(800);
 	setMotorTarget(motorD, getMotorEncoder(motorD)+100, 50);
 	waitUntilMotorStop(motorD);
 	clearTimer(T1);
-	while(time1(T1)<1000) lf_slw();
+	while(time1(T1)<1200) lf_slw();
 	stopp();
-	spin(0);
+	//spin(0);
 	setMotorSpeed(motorD, 20);
 	delay(1500);
 
@@ -257,7 +257,7 @@ task main(){
 	while(getColorReflected(S2)>15) setMotorSpeed(motorB, 40);
 	stopp();
 	clearTimer(T1);
-	while(time1[T1] < 400) lf_r();
+	while(time1[T1] < 800) lf_r();
 	stopp();
 	spin(0);
 	Tp=60;
@@ -298,10 +298,10 @@ task main(){
 	while(time1(T1)<900) lf_slw();
 	stopp();
 
-	spin(-93);
+	spin(-88);
 	while(getColorReflected(S2)>15) lf();
 	stopp();
-	spin(4);
+	spin(-2);
 	setMotorSpeed(motorB, -20);
 	while(getColorReflected(S2)<15) setMotorSpeed(motorC, -20);
 	stopp();
