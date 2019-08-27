@@ -301,7 +301,7 @@ void put_tono(int opc){
 	spin(170);
 	while(getColorReflected(S1)>15)setMotorSpeed(motorB,-60)
 	stopp();
-	av(-300,60);
+	av(-200,60);
 	while(true){
 		displayBigTextLine(7, "color:%d", getColorName(S2));
 		if(getColorName(S2)==5 || getColorName(S2)==2)break;
@@ -312,7 +312,7 @@ void put_tono(int opc){
 	setMotorSpeed(motorC, 0);
 	delay(300);
 	//spin(10);
-	av(-50,60);
+	av(-70,60);
 	//spin(0);
 	setMotorSpeed(motorD, -40);
 	delay(500);
