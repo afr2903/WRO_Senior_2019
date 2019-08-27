@@ -47,8 +47,8 @@ void spin(int dg){
 		gyro= getGyroDegrees(S3);
 		string gyr= getGyroDegrees(S3);
 		displayBigTextLine(5, gyr);
-		setMotorSpeed(motorB, -(dg-gyro+5));
-		setMotorSpeed(motorC, (dg-gyro+5));
+		setMotorSpeed(motorB, -(dg-gyro));
+		setMotorSpeed(motorC, (dg-gyro));
 	}
 	stopp();
 	resetGyro(S3);
@@ -312,8 +312,8 @@ void put_tono2(int opc){
 		av(100,90);
 		stopp();
 
-		while(getGyroDegrees(S3)>-90){
-			setMotorSpeed(motorC, -70);
+		while(getGyroDegrees(S3)>-87){
+			setMotorSpeed(motorC, -90);
 		}
 		stopp();
 		spin(-90);
