@@ -193,7 +193,7 @@ void pick(int l){
 	waitUntilMotorStop(motorD);
 	//delay(200);
 
-	av(30,50);
+	av(40,50);
 	spin(90);
   setMotorSpeed(motorD, -100);
 	delay(800);
@@ -206,7 +206,7 @@ void pick(int l){
 	setMotorSpeed(motorD, 60);
 	delay(400);
 
-	repeat(0){
+	repeat(1){
 		setMotorSpeed(motorA,100);
 		delay(300);
 		setMotorSpeed(motorA,0);
@@ -381,7 +381,14 @@ void regreso(){
 	stopp();
 
 	av(100, 60);
-	spin(90);
+	spin(98);
+	setMotorSpeed(motorB,-60);
+	setMotorSpeed(motorC,-60);
+	delay(500);
+	stopp();
+	resetGyro(S3);
+	delay(300);
+	av(120,60);
 	/*
 	while(getColorReflected(S2)>15)setMotorSpeed(motorB, -30);
 	setMotorSpeed(motorB, 0);
