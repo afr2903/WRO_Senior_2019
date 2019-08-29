@@ -206,7 +206,8 @@ void pick(int l){
 	setMotorSpeed(motorD, 60);
 	delay(400);
 
-	repeat(1){
+	num_rand=0;
+	repeat(num_rand){
 		setMotorSpeed(motorA,100);
 		delay(300);
 		setMotorSpeed(motorA,0);
@@ -222,78 +223,6 @@ void pick(int l){
 
 
 
-void put(){
-	int dif= devpos[cdev]-curr_line;
-	if(dif>0){
-		av(-50,60);
-		setMotorSpeed(motorB, 60);
-		delay(500);
-		while(getColorReflected(S1)>15) setMotorSpeed(motorB, 50);
-		setMotorSpeed(motorB, 0);
-		delay(300);
-
-		av_line();
-		setMotorSpeed(motorC, -50);
-		delay(500);
-		while(getColorReflected(S1)>15) setMotorSpeed(motorC, -50);
-		setMotorSpeed(motorB, 0);
-		delay(300);
-	}
-	else if(dif<0){
-		av(50,60);
-		setMotorSpeed(motorC, -50);
-		delay(200);
-		while(getColorReflected(S1)>15) setMotorSpeed(motorC, -50);
-		delay(100);
-		while(getColorReflected(S1)<15) setMotorSpeed(motorC, -50);
-		delay(100);
-		while(getColorReflected(S1)>15) setMotorSpeed(motorC, -50);
-		setMotorSpeed(motorB, 0);
-		delay(300);
-
-		setMotorSpeed(motorC, -50);
-		delay(500);
-		while(getColorReflected(S1)>15) setMotorSpeed(motorC, -50);
-		setMotorSpeed(motorB, 0);
-		delay(300);
-	}
-	else{
-		av(-50,60);
-		setMotorSpeed(motorB, 60);
-		delay(500);
-		while(getColorReflected(S1)>15) setMotorSpeed(motorB, 50);
-		setMotorSpeed(motorB, 0);
-		delay(300);
-
-		setMotorSpeed(motorC, -50);
-		delay(500);
-		while(getColorReflected(S1)>15) setMotorSpeed(motorC, -50);
-		setMotorSpeed(motorB, 0);
-		delay(300);
-	}
-
-	delay(200);
-	int luz= getColorReflected(S2);
-	while( (luz>15&&luz<40)||(luz>50) )lf();
-	setMotorSpeed(motorB, 0);
-	setMotorSpeed(motorC, 0);
-	delay(300);
-	av(0,40);
-	spin(180);
-	setMotorSpeed(motorD, -80);
-	delay(800);
-	setMotorSpeed(motorD, 30);
-	delay(500);
-
-	av(-100,70);
-	while(getColorReflected(S2)>15) setMotorSpeed(motorB, -50);
-	setMotorSpeed(motorB, 0);
-	delay(300);
-	spin(90);
-
-	curr_line= devpos[cdev];
-	cdev++;
-}
 
 void put_tono(int opc){
 	if(opc == 1){
@@ -307,13 +236,11 @@ void put_tono(int opc){
 		if(getColorName(S2)==5 || getColorName(S2)==2)break;
 		slw_line();
 	}
+	stopp();
 
-	setMotorSpeed(motorB, 0);
-	setMotorSpeed(motorC, 0);
-	delay(300);
-	//spin(10);
 	av(-70,60);
-	//spin(0);
+	spin(10);
+
 	setMotorSpeed(motorD, -40);
 	delay(500);
 	setMotorSpeed(motorD, -100);
@@ -324,6 +251,7 @@ void put_tono(int opc){
 	delay(1200);
 	spin(0);
 	}
+
 	if(opc==2){
 		while(getGyroDegrees(S3)>-180)setMotorSpeed(motorC, -60);
 		while(true){
@@ -335,13 +263,16 @@ void put_tono(int opc){
 		delay(300);
 		av(-20,60);
 		spin(-180);
-		setMotorSpeed(motorD, -30);
-		delay(500);
-		setMotorSpeed(motorD, -30);
-		delay(500);
-		setMotorSpeed(motorD, 80);
-		delay(900);
-		spin(0);
+
+	setMotorSpeed(motorD, -40);
+	delay(500);
+	setMotorSpeed(motorD, -100);
+	delay(750);
+	setMotorSpeed(motorD, 0);
+	delay(500);
+	setMotorSpeed(motorD, 30);
+	delay(1200);
+	spin(0);
 	}
 	if(opc==3){
 		while(getGyroDegrees(S3)<160)setMotorSpeed(motorB, -60);
@@ -353,16 +284,21 @@ void put_tono(int opc){
 		}
 		stopp();
 		spin(180);
-		av(-60,60);
+		av(-70,60);
 		spin(0);
-		setMotorSpeed(motorD, -30);
-		delay(500);
-		setMotorSpeed(motorD, -30);
-		delay(500);
-		setMotorSpeed(motorD, 80);
-		delay(900);
-		spin(0);
+
+	setMotorSpeed(motorD, -40);
+	delay(500);
+	setMotorSpeed(motorD, -100);
+	delay(750);
+	setMotorSpeed(motorD, 0);
+	delay(500);
+	setMotorSpeed(motorD, 30);
+	delay(1200);
+	spin(0);
+
 		}
+
 
 }
 
@@ -381,7 +317,8 @@ void regreso(){
 	stopp();
 
 	av(100, 60);
-	spin(98);
+	spin(90);
+	/*spin(93);
 	setMotorSpeed(motorB,-60);
 	setMotorSpeed(motorC,-60);
 	delay(500);
