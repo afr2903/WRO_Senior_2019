@@ -138,7 +138,7 @@ task read_cubes(){
 	finish=true;
 }
 task spin_claw(){
-	delay(1500);
+	delay(1700);
 	repeat(dev){
 		setMotorSpeed(motorA,100);
 		delay(300);
@@ -162,8 +162,17 @@ void regreso(){
 	stopp();
 	while(getColorReflected(S1)>15) slw_line_r();
 	stopp();
-	av(100, 60);
+	av(75, 60);
 	spin(93);
+	stopp();
+	while(getColorReflected(S1)>15) setMotorSpeed(motorC, 40);
+	stopp();
+	while(getColorReflected(S1)<15) setMotorSpeed(motorC, -40);
+	stopp();
+	while(getColorReflected(S2)>15) setMotorSpeed(motorB, 40);
+	stopp();
+	while(getColorReflected(S2)<15) setMotorSpeed(motorB, -40);
+	stopp();
 }
 
 void regreso_2(){
@@ -183,59 +192,50 @@ void regreso_2(){
 	stopp();
 	resetGyro(S3);
 	delay(500);
-	av(190,60);
+	av(110,60);
 	spin(90);
-	while(getColorReflected(S1)>15) slw_line_r();
+	while(getColorReflected(S2)>15) setMotorSpeed(motorB, 50);
+	delay(50);
+	while(getColorReflected(S2)<15) setMotorSpeed(motorB, 50);
+	stopp();
+	while(getColorReflected(S2)>15) setMotorSpeed(motorC, 50);
+	delay(50);
+	while(getColorReflected(S2)<15) setMotorSpeed(motorC, 50);
+	stopp();
+	spin(0);
+	while(time1[T1]<700) lf_r();
+	av_line();
 }
 
 
 void pick(int l){
 	av_line();
-	if(l==3)av(-100,60);
+	if(l==3)av(-100,100);
 
-	setMotorSpeed(motorB, 0);
-	setMotorSpeed(motorC, 0);
-	delay(200);
-
-	while(getGyroDegrees(S3)<85){
-		setMotorSpeed(motorB, -60);
-	}
-	setMotorSpeed(motorB, 0);
-	delay(200);
-
-	av(-150,60);
-	while(getColorReflected(S2)>15) slw_line();
-	setMotorSpeed(motorB, 0);
-	setMotorSpeed(motorC, 0);
-	delay(300);
-
-
-	setMotorSpeed(motorB, 0);
-	setMotorSpeed(motorC, 0);
-	delay(300);
-	//spin(90);
-	//av(160,20); //si hace falta avanzar para agarrarlo
-	//spin(0);
-	//av(-140,40);
-	setMotorSpeed(motorB, 0);
-	setMotorSpeed(motorC, 0);
-	delay(300);
-
-	setMotorSpeed(motorD, -50);
-	delay(1300);
-
+	while(getGyroDegrees(S3)<70) setMotorSpeed(motorB, -100);
+	delay(50);
+	while(getColorReflected(S1)>15) setMotorSpeed(motorB, -50);
 	stopp();
+
+	av(-150,100);
+	while(getColorReflected(S2)>15) slw_line();
+	stopp();
+	//spin(90);
+	//stopp();
+	setMotorSpeed(motorD, -50);
+	delay(1100);
+
 	setMotorTarget(motorD, getMotorEncoder(motorD)+90, 50);
 	waitUntilMotorStop(motorD);
-	//delay(200);
 
-	av(30,50);
+	av(50,50);
 	spin(90);
 	setMotorSpeed(motorD, -100);
 	delay(800);
 
 	stopp();
 	dev= cubes[cdev];
+	startTask(spin_claw);
 	setMotorSpeed(motorD, 10);
 	delay(500);
 	startTask(spin_claw);
@@ -249,74 +249,67 @@ void pick(int l){
 
 void put(int opc){
 	if(opc == 1){
-		av(-100,70);
+		av(-100,100);
 		spin(170);
-
+		while(getColorReflected(S1)>15) setMotorSpeed(motorB,-50);
+		stopp();
 		while(true){
 			displayBigTextLine(7, "color:%d", getColorName(S2));
 			if(getColorName(S2)==5 || getColorName(S2)==2)break;
 			slw_line();
 		}
+		stopp();
 
-		setMotorSpeed(motorB, 0);
-		setMotorSpeed(motorC, 0);
-		delay(1000);
-
-
-		setMotorSpeed(motorB, 0);
-		setMotorSpeed(motorC, 0);
-		delay(300);
-		spin(10);
-		av(-60,60);
-		spin(0);
-		setMotorSpeed(motorD, -40);
-		delay(500);
+		//spin(11);
+		av(-70,60);
+		spin(11);
+		setMotorSpeed(motorD, -30);
+		delay(600);
 		setMotorSpeed(motorD, -100);
 		delay(500);
-		setMotorSpeed(motorD, 25);
-		delay(1000);
+		setMotorSpeed(motorD, 35);
+		delay(500);
 		spin(0);
 	}
 	if(opc==2){
-		while(getGyroDegrees(S3)>-180)setMotorSpeed(motorC, -60);
+		while(getGyroDegrees(S3)>-170) setMotorSpeed(motorC, -100);
+		delay(50);
+		while(getColorReflected(S1)>15) setMotorSpeed(motorC, -60);
 		while(true){
 			if(getColorName(S2)==5 || getColorName(S2)==2)break;
 			slw_line();
 		}
-		setMotorSpeed(motorB, 0);
-		setMotorSpeed(motorC, 0);
-		delay(300);
-		av(-20,60);
+		stopp();
+		av(-60,70);
 		spin(-180);
 		setMotorSpeed(motorD, -40);
 		delay(500);
 		setMotorSpeed(motorD, -100);
 		delay(500);
-		setMotorSpeed(motorD, 80);
-		delay(900);
+		setMotorSpeed(motorD, 35);
+		delay(500);
 		spin(0);
 	}
 	if(opc==3){
-		while(getGyroDegrees(S3)<160)setMotorSpeed(motorB, -60);
+		while(getGyroDegrees(S3)<170) setMotorSpeed(motorB, -100);
 		delay(50);
-		while(getColorReflected(S1)>15)setMotorSpeed(motorB, -40);
+		while(getColorReflected(S1)>15) setMotorSpeed(motorB, -60);
 		while(true){
 			if(getColorName(S2)==2 || getColorName(S2)==2)break;
 			slw_line();
 		}
 		stopp();
 		spin(180);
-		av(-60,60);
+		av(-60,70);
 		spin(0);
 		setMotorSpeed(motorD, -40);
 		delay(500);
 		setMotorSpeed(motorD, -100);
 		delay(500);
-		setMotorSpeed(motorD, 80);
-		delay(900);
+		setMotorSpeed(motorD, 35);
+		delay(500);
 		spin(0);
 	}
-
 }
 void av_line2(){
 	Tp=60;
@@ -337,126 +330,6 @@ void av_line3(){
 	//stopp();
 	Tp=70;
 }
-void put_tono2(int opc){
-	if(opc == 3){
-		av(100,70);
-		stopp();
-
-		while(getGyroDegrees(S3)>-90){
-			setMotorSpeed(motorC, -70);
-		}
-		stopp();
-		spin(-90);
-		stopp();
-
-		clearTimer(T1);
-		while(time1[T1]<1500){
-			gyro= getGyroDegrees(S3);
-			string gyr= getGyroDegrees(S3);
-			displayBigTextLine(5, gyr);
-			powerRight2= (80-(gyro*2))*1;
-			powerLeft2= (80+(gyro*2))*1;
-
-			setMotorSpeed(motorB, -powerRight2);
-			setMotorSpeed(motorC, -powerLeft2);
-		}
-		stopp();
-		resetGyro(S3);
-		delay(500);
-		av(300,70);
-		while(getGyroDegrees(S3)>-70) setMotorSpeed(motorC, -70);
-		while(getColorReflected(S1)>15) setMotorSpeed(motorC,-70);
-		stopp();
-		clearTimer(T1);
-		while(time1[T1]<900)slw_line();
-		stopp();
-		spin(-90);
-		av(50,70);
-		repeat(4){
-			av_line2();
-		}
-		stopp();
-		av(100,70);
-		spin(90);
-		stopp();
-
-		setMotorSpeed(motorB, -80);
-		setMotorSpeed(motorC, -80);
-		delay(1200);
-		stopp();
-		resetGyro(S3);
-		delay(500);
-
-		av(180,70);
-		setMotorSpeed(motorD, -80);
-		delay(800);
-		setMotorSpeed(motorD, 30);
-		delay(500);
-		av(-60,60);
-		spin(90);
-		repeat(4)av_line3();
-		av(60,60);
-		spin(-90);
-	}
-	if(opc ==4){
-		av(100,70);
-		stopp();
-
-		while(getGyroDegrees(S3)<90){
-			setMotorSpeed(motorB, -70);
-		}
-		stopp();
-		spin(90);
-		stopp();
-
-		clearTimer(T1);
-		while(time1[T1]<1500){
-			gyro= getGyroDegrees(S3);
-			string gyr= getGyroDegrees(S3);
-			displayBigTextLine(5, gyr);
-			powerRight2= (80-(gyro*2))*1;
-			powerLeft2= (80+(gyro*2))*1;
-
-			setMotorSpeed(motorB, -powerRight2);
-			setMotorSpeed(motorC, -powerLeft2);
-		}
-		stopp();
-		resetGyro(S3);
-		delay(500);
-		av(300,70);
-
-
-		while(getGyroDegrees(S3)<70) setMotorSpeed(motorB, -70);
-		while(getColorReflected(S1)>15) setMotorSpeed(motorB,-70);
-		stopp();
-		clearTimer(T1);
-		while(time1[T1]<1400){
-			slw_line_r();
-		}
-		stopp();
-		spin(90);
-		av(50,70);
-		repeat(4)av_line3();
-
-		stopp();
-		av(100,70);
-		spin(-90);
-		stopp();
-
-		setMotorSpeed(motorB, -80);
-		setMotorSpeed(motorC, -80);
-		delay(1200);
-		stopp();
-		resetGyro(S3);
-		delay(500);
-		av(180,70);
-		setMotorSpeed(motorD, -80);
-		delay(800);
-		setMotorSpeed(motorD, 30);
-		delay(500);
-	}
-}
-
 
 task turnoff(){
 	waitUntil(getButtonPress(buttonRight)==1);
@@ -503,12 +376,13 @@ task main(){
 	cubes[1]=pos[5];
 	for(int j=2; j<=4; j++) cubes[j]=pos[j];
 
-	av(-100, 50);
+	av(-70, 50);
 	setMotorSpeed(motorB,40);
 	setMotorSpeed(motorC,0);
 	delay(500);
 	while(getColorReflected(S2)>20) setMotorSpeed(motorB, 40);
-	spin(-90);
+	stopp();
+	spin(-88);
 
 	clearTimer(T1);
 	while(time1[T1] < 500) lf_r();
@@ -523,16 +397,23 @@ task main(){
 	Kp = 110;
 	Tp = 70;
 
-
-	setMotorSpeed(motorB,0);
-	setMotorSpeed(motorC,0);
+	stopp();
 	//FIN programa read cube.......................
 	//.............................................
 	//Programa pruebas deja........................
 	resetGyro(S3);
-	av(85, 60);
-	spin(-90);
-
+	av(60, 60);
+	spin(-88);
+	//lineas de tono.....................................................
+	stopp();
+	while(getColorReflected(S1)>15) setMotorSpeed(motorC, 40);
+	stopp();
+	while(getColorReflected(S1)<15) setMotorSpeed(motorC, -40);
+	stopp();
+	while(getColorReflected(S2)>15) setMotorSpeed(motorB, 40);
+	stopp();
+	while(getColorReflected(S2)<15) setMotorSpeed(motorB, -40);
+	stopp();
 	for(int l=1; l<=3; l++){
 		for(;curr_line<l; curr_line++) av_line();
 		stopp();
@@ -564,10 +445,14 @@ task main(){
 			curr_line= curr_line+ (opc==1? -1: opc==2? -2 : 0);
 		}
 	}
+	if(cdev!=2){
+		spin(-90);
+		av(250, 70);
+	}
 	regreso_2();
+	stopp();
 	//FIN PRUEBAS DEJA...............................
 	//DEJAR CABLE 1..................................
-	av_line();
 	while(getColorReflected(S2)>15) setMotorSpeed(motorB, 40);
 	stopp();
 	while(getColorReflected(S1)>15) setMotorSpeed(motorC, 40);
@@ -667,9 +552,9 @@ task main(){
 	resetGyro(S3);
 	delay(500);
 
-	while(getGyroDegrees(S3)>-70) setMotorSpeed(motorB, 70);
+	while(getGyroDegrees(S3)>-60) setMotorSpeed(motorB, 60);
 	delay(50);
-	while(getColorReflected(S1)>15) setMotorSpeed(motorB, 50);
+	while(getColorReflected(S1)>15) setMotorSpeed(motorB, 40);
 	delay(50);
 	while(getColorReflected(S1)<15) setMotorSpeed(motorB, 30);
 	stopp();
@@ -765,73 +650,25 @@ task main(){
 	setMotorSpeed(motorD, 50);
 	delay(1000);
 
-	//REGRESAR A LINEA...........................................
-
-	spin(-90);
-
+  //REGRESO................................................
+	spin(90);
 	clearTimer(T1);
-	while(time1[T1]<2000){
-	gyro= getGyroDegrees(S3);
-	string gyr= getGyroDegrees(S3);
-	displayBigTextLine(5, gyr);
-	powerRight2= (70-(gyro*2))*1;
-	powerLeft2= (70+(gyro*2))*1;
+	while(time1[T1]<1700){
+		gyro= getGyroDegrees(S3);
+		string gyr= getGyroDegrees(S3);
+		displayBigTextLine(5, gyr);
+		powerRight2= (70-(gyro*2))*1;
+		powerLeft2= (70+(gyro*2))*1;
 
-	setMotorSpeed(motorB, -powerRight2);
-	setMotorSpeed(motorC, -powerLeft2);
+		setMotorSpeed(motorB, -powerRight2);
+		setMotorSpeed(motorC, -powerLeft2);
 	}
-	av(160,60);
+	av(100,80);
 	spin(90);
-	repeat(5) av_line3();
-  av(30,60);
-  spin(-90);
-
-  //DEVICES 2................................................
-  cdev=3;
-  curr_line=0;
-  for(int l=1; l<=3; l++){
-		for(;curr_line<l; curr_line++) {
-
-			av_line();
-		}
-		setMotorSpeed(motorB, 0);
-		setMotorSpeed(motorC, 0);
-		delay(100);
-
-
-		dev= SensorValue(S4);
-		string dv= SensorValue(S4);
-		displayBigTextLine(12,dv);
-		delay(200);
-
-
-
-		if(dev==0){
-			pick(l);
-			put_tono2(cdev);
-			repeat((4-cubes[cdev])%4){
-				setMotorSpeed(motorA,100);
-				delay(300);
-				setMotorSpeed(motorA,0);
-				delay(100);
-				setMotorSpeed(motorA,-100);
-				delay(300);
-				setMotorSpeed(motorA,0);
-				delay(100);
-			}
-			if(cdev==4) break;
-			cdev++;
-			curr_line= 0;
-			//break;
-		}
-	}
-
-	av(-100,70);
-	spin(90);
-	setMotorSpeed(motorB, 80);
-	setMotorSpeed(motorC, 90);
+	setMotorSpeed(motorB, 90);
+	setMotorSpeed(motorC, 95);
 	delay(2000);
-
+	av(-100, 50);
 
 	stopAllTasks();
 }
