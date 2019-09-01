@@ -164,22 +164,23 @@ void regreso(){
 	stopp();
 	av(75, 60);
 	spin(93);
+	while(getColorReflected(S1)>15)setMotorSpeed(motorC,40);
 	stopp();
-	while(getColorReflected(S1)>15) setMotorSpeed(motorC, 40);
+	while(getColorReflected(S1)<15)setMotorSpeed(motorC,-40);
 	stopp();
-	while(getColorReflected(S1)<15) setMotorSpeed(motorC, -40);
+	av(-80,60);
+	clearTimer(T1);
+	while(time1[T1]<400) slw_line_r();
 	stopp();
-	while(getColorReflected(S2)>15) setMotorSpeed(motorB, 40);
-	stopp();
-	while(getColorReflected(S2)<15) setMotorSpeed(motorB, -40);
-	stopp();
+
 }
 
 void regreso_2(){
-	av(-250,60);
+		av(-250,60);
 	stopp();
 	spin(90);
 	clearTimer(T1);
+	getColorReflected(S2);
 	while(time1[T1]<3000){
 		gyro= getGyroDegrees(S3);
 		string gyr= getGyroDegrees(S3);
@@ -192,15 +193,17 @@ void regreso_2(){
 	stopp();
 	resetGyro(S3);
 	delay(500);
+
 	av(110,60);
 	spin(90);
-	while(getColorReflected(S2)>15) setMotorSpeed(motorB, 50);
-	delay(50);
-	while(getColorReflected(S2)<15) setMotorSpeed(motorB, 50);
 	stopp();
-	while(getColorReflected(S2)>15) setMotorSpeed(motorC, 50);
-	delay(50);
-	while(getColorReflected(S2)<15) setMotorSpeed(motorC, 50);
+	while(getColorReflected(S2)>15) setMotorSpeed(motorB, 40);
+	stopp();
+	while(getColorReflected(S2)<15) setMotorSpeed(motorB, 40);
+	stopp();
+	while(getColorReflected(S2)>15) setMotorSpeed(motorC, 40);
+	stopp();
+	while(getColorReflected(S2)<15) setMotorSpeed(motorC, 40);
 	stopp();
 	spin(0);
 	while(time1[T1]<700) lf_r();
@@ -410,10 +413,11 @@ task main(){
 	stopp();
 	while(getColorReflected(S1)<15) setMotorSpeed(motorC, -40);
 	stopp();
-	while(getColorReflected(S2)>15) setMotorSpeed(motorB, 40);
+	av(-80,60);
+	clearTimer(T1);
+	while(time1[T1]<400) slw_line_r();
 	stopp();
-	while(getColorReflected(S2)<15) setMotorSpeed(motorB, -40);
-	stopp();
+
 	for(int l=1; l<=3; l++){
 		for(;curr_line<l; curr_line++) av_line();
 		stopp();
@@ -439,13 +443,13 @@ task main(){
 			put(opc);
 			dev= (4-cubes[cdev])%4;
 			startTask(spin_claw);
-			if(cdev==2) break;
-			regreso();
 			cdev++;
+			if(cdev==3) break;
+			regreso();
 			curr_line= curr_line+ (opc==1? -1: opc==2? -2 : 0);
 		}
 	}
-	if(cdev!=2){
+	if(cdev!=3){
 		spin(-90);
 		av(250, 70);
 	}
@@ -668,7 +672,7 @@ task main(){
 	setMotorSpeed(motorB, 90);
 	setMotorSpeed(motorC, 95);
 	delay(2000);
-	av(-100, 50);
+	av(-150, 50);
 
 	stopAllTasks();
 }
