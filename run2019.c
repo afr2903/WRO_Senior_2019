@@ -404,6 +404,7 @@ task main(){
 	//FIN programa read cube.......................
 	//.............................................
 	//Programa pruebas deja........................
+	spin(0);
 	resetGyro(S3);
 	av(60, 60);
 	spin(-88);
@@ -416,7 +417,9 @@ task main(){
 	av(-80,60);
 	clearTimer(T1);
 	while(time1[T1]<400) slw_line_r();
-	stopp();
+	stopp()
+
+	;
 
 	for(int l=1; l<=3; l++){
 		for(;curr_line<l; curr_line++) av_line();
